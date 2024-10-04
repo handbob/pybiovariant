@@ -48,21 +48,21 @@ def store_in_postgresql(variants):
     cursor.close()
     conn.close()
 
-def store_in_mongodb(variants):
-    """Stores variants in MongoDB."""
-    client = MongoClient('localhost', 27017)
-    db = client['biovariant']
-    collection = db['variants']
+# def store_in_mongodb(variants):
+#     """Stores variants in MongoDB."""
+#     client = MongoClient('localhost', 27017)
+#     db = client['biovariant']
+#     collection = db['variants']
+#
+#     mongo_data = [{
+#         'chromosome': variant.CHROM,
+#         'position': variant.POS,
+#         'ref_allele': variant.REF,
+#         'alt_allele': variant.ALT[0],
+#         'info': dict(variant.INFO)
+#     } for variant in variants]
 
-    mongo_data = [{
-        'chromosome': variant.CHROM,
-        'position': variant.POS,
-        'ref_allele': variant.REF,
-        'alt_allele': variant.ALT[0],
-        'info': dict(variant.INFO)
-    } for variant in variants]
-
-    collection.insert_many(mongo_data)
+    # collection.insert_many(mongo_data)
 
 if __name__ == "__main__":
     # Use absolute path for the VCF file
@@ -73,5 +73,5 @@ if __name__ == "__main__":
     # Load and process variants in batches
     for variant_batch in load_vcf(vcf_file):
         store_in_postgresql(variant_batch)
-        store_in_mongodb(variant_batch)
+        # store_in_mongodb(variant_batch)
         print(f"Stored batch of {len(variant_batch)} variants.")
